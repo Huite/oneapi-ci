@@ -15,39 +15,10 @@ IF "%VS_VER%"=="2019_build_tools" (
 for /f "tokens=* usebackq" %%f in (`dir /b "C:\Program Files (x86)\Intel\oneAPI\compiler\" ^| findstr /V latest ^| sort`) do @set "LATEST_VERSION=%%f"
 @call "C:\Program Files (x86)\Intel\oneAPI\compiler\%LATEST_VERSION%\env\vars.bat"
 
-git clone --depth 1 https://github.com/oneapi-src/oneAPI-samples.git
-
-if "%LANGUAGE%" == "c++" goto cpp
-if "%LANGUAGE%" == "fortran" goto fortran
-if "%LANGUAGE%" == "dpc++" goto dpcpp
-goto exit
-
-:cpp
-cd oneAPI-samples\DirectProgramming\C++\CompilerInfrastructure\Intrinsics
-icl -O2 src\intrin_dot_sample.cpp
-icl -O2 src\intrin_double_sample.cpp
-icl -O2 src\intrin_ftz_sample.cpp
-intrin_dot_sample.exe
-intrin_double_sample.exe
-intrin_ftz_sample.exe
+cd src/fortran
+ifort hello.f90 /exe:hello.exe
+dir /b
+hello.exe
 set RESULT=%ERRORLEVEL%
-goto exit
 
-:fortran
-cd oneAPI-samples\DirectProgramming\Fortran\CombinationalLogic\openmp-primes
-ifort -O2 -fpp -qopenmp src\openmp_sample.f90
-openmp_sample.exe
-set RESULT=%ERRORLEVEL%
-goto exit
-
-:dpcpp
-for /f "tokens=* usebackq" %%f in (`dir /b "C:\Program Files (x86)\Intel\oneAPI\tbb\" ^| findstr /V latest ^| sort`) do @set "LATEST_VERSION=%%f"
-@call "C:\Program Files (x86)\Intel\oneAPI\tbb\%LATEST_VERSION%\env\vars.bat"
-cd oneAPI-samples\DirectProgramming\DPC++\DenseLinearAlgebra\vector-add
-nmake -f Makefile.win
-nmake -f Makefile.win run
-set RESULT=%ERRORLEVEL%
-goto exit
-
-:exit
 exit /b %RESULT%
