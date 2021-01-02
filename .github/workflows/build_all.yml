@@ -17,19 +17,31 @@ jobs:
     defaults:
       run:
         shell: bash
+
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repo
+      uses: actions/checkout@v2.3.4
+  
+    - name: setup-conda
+      uses: s-weigand/setup-conda@v1.0.5
+      with:
+        update-conda: true
+        miniconda-version: "latest"2
+
     - name: cache install
       id: cache-install
       uses: actions/cache@v2
       with:
         path: C:\Program Files (x86)\Intel\oneAPI\compiler
         key: install-${{ env.WINDOWS_HPCKIT_URL }}-${{ env.WINDOWS_FORTRAN_COMPONENTS }}-compiler-${{ hashFiles('**/scripts/cache_exclude_windows.sh') }}
+
     - name: install
       if: steps.cache-install.outputs.cache-hit != 'true'
       run: scripts/install_windows.bat $WINDOWS_HPCKIT_URL $WINDOWS_FORTRAN_COMPONENTS
+
     - name: build
       run: scripts/build_windows.bat fortran
+
     - name: exclude unused files from cache
       if: steps.cache-install.outputs.cache-hit != 'true'
       shell: bash
