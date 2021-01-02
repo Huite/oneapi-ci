@@ -27,10 +27,10 @@ jobs:
   
     - name: install
       if: runner.os == 'Windows'
-      run: .github/intel-scripts/install_windows.bat $WINDOWS_HPCKIT_URL $WINDOWS_FORTRAN_COMPONENTS
+      run: scripts/install_windows.bat $WINDOWS_HPCKIT_URL $WINDOWS_FORTRAN_COMPONENTS
 
     - name: build
-      run: .github/intel-scripts/build_windows.bat fortran
+      run: scripts/build_windows.bat fortran
 
 
   build_linux_fortran:
@@ -45,4 +45,4 @@ jobs:
   
     - name: install
       if: runner.os == 'Linux'
-      run: sudo scripts/install_linux.sh $LINUX_HPCKIT_URL $LINUX_FORTRAN_COMPONENTS_WEB
+      run: scripts/install_linux.sh $LINUX_HPCKIT_URL $LINUX_FORTRAN_COMPONENTS_WEB
