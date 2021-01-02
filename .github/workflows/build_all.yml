@@ -45,4 +45,4 @@ jobs:
   
     - name: install
       if: runner.os == 'Linux'
-      run: scripts/install_linux.sh $LINUX_HPCKIT_URL $LINUX_FORTRAN_COMPONENTS_WEB
+      run: sudo scripts/install_linux.sh $LINUX_HPCKIT_URL $LINUX_FORTRAN_COMPONENTS_WEB
